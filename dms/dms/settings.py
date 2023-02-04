@@ -20,10 +20,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&1@z-6y0kgti^4p=ry*dj!-o30y^#hgi#v2s=5vh#ypb9q6=5s'
+SECRET_KEY = os.environ['SECRET_KEY']
+#SECRET_KEY = 'django-insecure-&1@z-6y0kgti^4p=ry*dj!-o30y^#hgi#v2s=5vh#ypb9q6=5s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -41,8 +42,6 @@ INSTALLED_APPS = [
     'management',
     'cities_light',
     'reporting',
-    'osm_field',
-    #'location_field.apps.DefaultConfig',
 ]
 
 CITIES_INCLUDE_NUMERIC_ALTERNATIVE_NAMES = True
@@ -119,6 +118,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -130,33 +131,3 @@ CITIES_LIGHT_INCLUDE_COUNTRIES = ['IN']
 
 #PlainLocationField
 LOCATION_FIELD_PATH = STATIC_URL + 'location_field'
-
-LOCATION_FIELD = {
-    # 'map.provider': 'google',
-    # 'map.zoom': 13,
-
-    # 'search.provider': 'google',
-    # 'search.suffix': '',
-
-    # # Google
-    # 'provider.google.api': '//maps.google.com/maps/api/js?sensor=false',
-    # 'provider.google.api_key': 'AIzaSyAn1P0YJqc4rmuy6OQZu4FKv4YerGbKXUI',
-    # 'provider.google.api_libraries': '',
-    # 'provider.google.map.type': 'ROADMAP',
-
-    # # Mapbox
-    # 'provider.mapbox.access_token': '',
-    # 'provider.mapbox.max_zoom': 18,
-    # 'provider.mapbox.id': 'mapbox.streets',
-
-    # OpenStreetMap
-    'provider.openstreetmap.max_zoom': 18,
-
-    # misc
-    'resources.root_path': LOCATION_FIELD_PATH,
-    'resources.media': {
-        'js': (
-            LOCATION_FIELD_PATH + '/js/form.js',
-        ),
-    },
-}

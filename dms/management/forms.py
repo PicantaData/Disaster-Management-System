@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Organization, Volunteer
+from .models import Organization, Volunteer, Resource
 from django.forms import CheckboxSelectMultiple, TextInput, NumberInput, Select, SelectMultiple
 
 
@@ -26,3 +26,14 @@ class VolunteerForm(ModelForm):
             'city': Select(attrs={"class":"form-select my-2 mb-3"}),
         }
 
+
+class ResourceForm(ModelForm):
+    class Meta:
+        model = Resource
+        exclude = ['resourceID', 'organization']
+        widgets = {
+            'name': TextInput(attrs={"class":"form-control my-2 mb-3"}),
+            'quantity':TextInput(attrs={"class":"form-control my-2 mb-3"}),
+            'city':Select(attrs={"class":"form-control my-2 mb-3"}),
+            'ward':NumberInput(attrs={"class":"form-control my-2 mb-3"})
+        }

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+import uuid
 # Create your models here.
 
 class Organization(models.Model):
@@ -48,10 +49,12 @@ class Volunteer(models.Model):
     
 
 class Resource(models.Model):
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    resourceID = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=256)
     quantity = models.CharField(max_length=32)
     city = models.ForeignKey('cities_light.City', on_delete=models.SET_NULL, null=True, blank=True)
     ward = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        return str(self.user.get_full_name())
+        return str(self.name)

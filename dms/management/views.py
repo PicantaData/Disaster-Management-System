@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .forms import OrganizationForm,VolunteerForm
+from .forms import OrganizationForm,VolunteerForm, ResourceForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -90,7 +90,93 @@ def orgregister(request):
     return render(request, 'register.html', {'form':form, 'type':'Organization'})
 
 
-
 def userlogout(request):
     logout(request)
     return redirect('index')
+
+
+def resources(request):
+    if not request.user.is_authenticated:
+        return redirect('index')
+    if Volunteer.objects.filter(user=request.user).exists():
+        resources = Resource.objects.filter(organization=request.user.volunteer.organization)
+    else:
+        resources = Resource.objects.filter(organization=request.user.organization)
+    return render(request, 'resources.html', {'resources':resources})
+
+
+def addResource(request):
+    if request.user.is_authenticated:
+        try:
+            user = request.user.organization
+        except:
+            messages.error(request, 'Cannot Add Resource')
+            return redirect('resources')
+    else:
+        messages.error(request, 'Cannot view resources')
+        return redirect('index')
+
+    form = ResourceForm()
+    if request.method == 'POST':
+        form = ResourceForm(request.POST)
+        if form.is_valid():
+                resource = form.save(commit=False)
+                resource.organization = request.user.organization
+                resource = form.save()
+                return redirect('resources')
+        else:
+            return render(request, 'resourceform.html', {'form':form})
+    return render(request, 'resourceform.html', {'form':form, 'type':'Add'})
+
+
+def editResource(request, rID):
+    if request.user.is_authenticated:
+        try:
+            user = request.user.organization
+        except:
+            messages.error(request, 'Cannot Add Resource')
+            return redirect('resources')
+    else:
+        messages.error(request, 'Cannot view resources')
+        return redirect('index')
+
+    try:
+        resource = Resource.objects.filter(resourceID=rID, organization=request.user.organization)[0]
+    except:
+        messages.error(request, 'Resource does not exist.')
+        return redirect('resources')
+
+    form = ResourceForm(instance=resource)
+    if request.method == 'POST':
+        form = ResourceForm(request.POST, instance=resource)
+        if form.is_valid():
+                resource = form.save()
+                return redirect('resources')
+        else:
+            return render(request, 'resourceform.html', {'form':form})
+
+    return render(request, 'resourceform.html', {'form':form, 'type':'Edit'})
+
+
+def delResource(request, rID):
+    try:
+        user = request.user.organization
+    except:
+        messages.error(request, 'Cannot Delete Resource')
+        return redirect('resources')
+
+    Resource.objects.filter(resourceID=rID, organization=request.user.organization).delete()
+
+    return redirect('resources')
+
+
+def volunteers(request):
+    if not request.user.is_authenticated:
+        return redirect('index')
+
+    if Volunteer.objects.filter(user=request.user).exists():
+        volunteers = Volunteer.objects.filter(organization=request.user.volunteer.organization)
+    else:
+        volunteers = Volunteer.objects.filter(organization=request.user.organization)
+
+    return render(request, 'volunteers.html', {'volunteers':volunteers})

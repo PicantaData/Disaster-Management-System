@@ -5,6 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
         <title>Disaster Management System</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     </head>
@@ -37,18 +38,13 @@
                   <li class="nav-item">
                     <a class="nav-link mx-2" aria-current="page" href="{% url 'guidelines' %}">Guidelines</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link mx-2" aria-current="page" href="{% url 'donate' %}">Donate</a>
-                  </li>
                   {% if request.user.is_authenticated %}
                   <li class="nav-item">
-                    <a class="nav-link mx-2" aria-current="page" href="#">Resources</a>
+                    <a class="nav-link mx-2" aria-current="page" href="{% url 'resources' %}">Resources</a>
                   </li>
-                  {% if request.user.organization %}
                   <li class="nav-item">
-                    <a class="nav-link mx-2" aria-current="page" href="#">Volunteers</a>
+                    <a class="nav-link mx-2" aria-current="page" href="{% url 'volunteers' %}">Volunteers</a>
                   </li>
-                  {% endif %}
                   <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle mx-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Profile
@@ -73,7 +69,6 @@
                   {% endif %}
                 </ul>
               </div>
-              
             </div>
         </nav>
         {% block body %}
