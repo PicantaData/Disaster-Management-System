@@ -19,7 +19,7 @@ class Organization(models.Model):
 
 
     def __str__(self):
-        return self.user
+        return str(self.user.get_full_name())
 
 
 class Skill(models.Model):
@@ -31,7 +31,7 @@ class Skill(models.Model):
 
 class Volunteer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    organization = models.OneToOneField(Organization, on_delete=models.CASCADE, blank=True, null=True)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, blank=True, null=True)
     age = models.PositiveSmallIntegerField(blank=True, null=True)
     sex = models.CharField(max_length=1, blank=True, null=True,
         choices=[
@@ -40,7 +40,7 @@ class Volunteer(models.Model):
             ('O', 'Other')
         ])
     city = models.ForeignKey('cities_light.City', on_delete=models.SET_NULL, null=True, blank=True)
-    skills = models.ManyToManyField(Skill)
+    skills = models.ManyToManyField(Skill, blank=True)
     availability = models.BooleanField(default=True)
 
     def __str__(self):
@@ -52,3 +52,6 @@ class Resource(models.Model):
     quantity = models.CharField(max_length=32)
     city = models.ForeignKey('cities_light.City', on_delete=models.SET_NULL, null=True, blank=True)
     ward = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return str(self.user.get_full_name())

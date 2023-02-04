@@ -21,13 +21,18 @@
                 <img src="{% static 'images/logo.png' %}" style="height: 50px;"/>
                 <b class="mx-2">DMS</b>
               </a>
+              <div class="ms-auto me-2">
+                <a class="text-end btn btn-danger bg-danger-subtle btn-sm text-dark" href="{% url 'report' %}">
+                  Report
+                </a>
+              </div>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon" style="width: 1.2rem"></span>
               </button>
               <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                 <ul class="navbar-nav align-items-center">
                   <li class="nav-item">
-                    <a class="nav-link mx-2" aria-current="page" href="#">Dashboard</a>
+                    <a class="nav-link mx-2" aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link mx-2" aria-current="page" href="{% url 'guidelines' %}">Guidelines</a>
@@ -67,8 +72,8 @@
                   </li>
                   {% endif %}
                 </ul>
-                  
               </div>
+              
             </div>
         </nav>
         {% block body %}

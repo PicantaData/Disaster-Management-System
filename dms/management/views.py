@@ -42,14 +42,12 @@ def register(request):
             return redirect('register')
 
         user = User(first_name=request.POST['name'], username=request.POST['email'], password=request.POST['password'])
+        request.session['username'] = user.username
+        user.save()
 
         if request.POST['type'] == "volunteer":
-            request.session['username'] = user.username
-            user.save()
             return redirect('volregister')
         else:
-            request.session['username'] = user.username
-            user.save()
             return redirect('orgregister')
 
     return render(request, 'userreg.html')
@@ -75,16 +73,17 @@ def volregister(request):
 def orgregister(request):
     if request.user.is_authenticated:
         return redirect('index')
+
+    user = User.objects.get(username=request.session['username'])
     form = OrganizationForm()
     if request.method == 'POST':
         form = OrganizationForm(request.POST)
         if form.is_valid():
-                form = form.clean()
                 org = form.save(commit=False)
-                org.user = request.user
+                org.user = user
                 org.save()
-                login(request, request.user)
-                return render('index')
+                login(request, user)
+                return redirect('index')
         else:
             return render(request, 'register.html', {'form':form})
 

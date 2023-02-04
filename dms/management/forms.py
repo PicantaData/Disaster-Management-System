@@ -9,7 +9,7 @@ class OrganizationForm(ModelForm):
         exclude = ['user']
         widgets = {
             'locations': SelectMultiple(attrs={"class":"form-select my-2 mb-3"}),
-            'domain': TextInput(attrs={"class":"form-select my-2 mb-3"}),
+            'domain': TextInput(attrs={"class":"form-control my-2 mb-3"}),
             'level': Select(attrs={"class":"form-select my-2 mb-3"}),
         }
 
