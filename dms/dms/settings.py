@@ -39,8 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'informational',
     'management',
-    'cities'
+    'cities_light',
+    'reporting',
+    'osm_field',
+    #'location_field.apps.DefaultConfig',
 ]
+
+CITIES_INCLUDE_NUMERIC_ALTERNATIVE_NAMES = True
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -89,16 +95,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
@@ -127,3 +124,39 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CITIES_LIGHT_INCLUDE_COUNTRIES = ['IN']
+
+
+#PlainLocationField
+LOCATION_FIELD_PATH = STATIC_URL + 'location_field'
+
+LOCATION_FIELD = {
+    # 'map.provider': 'google',
+    # 'map.zoom': 13,
+
+    # 'search.provider': 'google',
+    # 'search.suffix': '',
+
+    # # Google
+    # 'provider.google.api': '//maps.google.com/maps/api/js?sensor=false',
+    # 'provider.google.api_key': 'AIzaSyAn1P0YJqc4rmuy6OQZu4FKv4YerGbKXUI',
+    # 'provider.google.api_libraries': '',
+    # 'provider.google.map.type': 'ROADMAP',
+
+    # # Mapbox
+    # 'provider.mapbox.access_token': '',
+    # 'provider.mapbox.max_zoom': 18,
+    # 'provider.mapbox.id': 'mapbox.streets',
+
+    # OpenStreetMap
+    'provider.openstreetmap.max_zoom': 18,
+
+    # misc
+    'resources.root_path': LOCATION_FIELD_PATH,
+    'resources.media': {
+        'js': (
+            LOCATION_FIELD_PATH + '/js/form.js',
+        ),
+    },
+}
